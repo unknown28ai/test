@@ -1,17 +1,22 @@
 from TikTokApi import TikTokApi
 import requests
 
-# Function to download TikTok videos by username
+# Function to download TikTok videos by hashtags
 def download_tiktok_videos():
-    api = TikTokApi()  # Correctly initialize TikTokApi
+    api = TikTokApi()
 
-    # Search for videos by Andrew Tate's username or a specific hashtag
-    username = "andrew.tate"  # Make sure this is correct
-    user_videos = api.by_username(username, count=1)  # Fetch one video
+    hashtags = ["therealworld", "hu", "hustlersuniversity", "matrix"]
+    videos = []
 
-    if user_videos:
-        video_url = user_videos[0]['video']['playAddr']  # Get video URL
-        return video_url  # Return the direct URL to the video
+    # Fetch videos for each hashtag
+    for hashtag in hashtags:
+        hashtag_videos = api.by_hashtag(hashtag, count=1)  # Fetch one video per hashtag
+        videos.extend(hashtag_videos)  # Collect videos from all hashtags
+
+    if videos:
+        # Get the URL of the first video found
+        video_url = videos[0]['video']['playAddr']  # Assuming 'playAddr' contains the video URL
+        return video_url
     else:
         return None  # Return None if no videos found
 
