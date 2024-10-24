@@ -1,14 +1,19 @@
 from TikTokApi import TikTokApi
 import requests
 
-# TikTok API to download trending videos
+# Function to download TikTok videos by username
 def download_tiktok_videos():
-    api = TikTokApi.get_instance()
-    trending_videos = api.by_trending(count=1)  # Fetch one trending video
+    api = TikTokApi()  # Change this line
 
-    video_url = trending_videos[0]['video']['playAddr']  # Get video URL
-    return video_url  # Return the direct URL to the video
+    # Search for videos by Andrew Tate's username or a specific hashtag
+    username = "andrew.tate"  # Change this if his TikTok username is different
+    user_videos = api.by_username(username, count=1)  # Fetch one video
 
+    if user_videos:
+        video_url = user_videos[0]['video']['playAddr']  # Get video URL
+        return video_url  # Return the direct URL to the video
+    else:
+        return None  # Return None if no videos found
 
 # Instagram API to post the video
 def post_to_instagram(video_url, caption):
