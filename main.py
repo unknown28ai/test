@@ -3,10 +3,10 @@ import requests
 
 # Function to download TikTok videos by username
 def download_tiktok_videos():
-    api = TikTokApi()  # Change this line
+    api = TikTokApi()  # Correctly initialize TikTokApi
 
     # Search for videos by Andrew Tate's username or a specific hashtag
-    username = "andrew.tate"  # Change this if his TikTok username is different
+    username = "andrew.tate"  # Make sure this is correct
     user_videos = api.by_username(username, count=1)  # Fetch one video
 
     if user_videos:
@@ -33,8 +33,11 @@ def post_to_instagram(video_url, caption):
 # Main function to download and post video
 def main():
     video_url = download_tiktok_videos()
-    caption = "Reposting TikTok video to Instagram #repost"
-    post_to_instagram(video_url, caption)
+    if video_url:
+        caption = "Reposting Andrew Tate's video to Instagram #AndrewTate #Repost"
+        post_to_instagram(video_url, caption)
+    else:
+        print("No videos found.")
 
 if __name__ == "__main__":
     main()
