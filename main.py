@@ -1,24 +1,26 @@
-from TikTokApi import TikTokApi
+from pytube import YouTube
 import requests
+import random
 
-# Function to download TikTok videos by hashtags
+# Function to download a YouTube Short video
+def download_youtube_short(video_url):
+    yt = YouTube(video_url)
+    stream = yt.streams.filter(progressive=True, file_extension='mp4').first()  # Choose an mp4 stream
+    return stream.url if stream else None
+
+# Function to download TikTok videos by hashtags (or implement this if still needed)
 def download_tiktok_videos():
-    api = TikTokApi()
+    # Existing TikTok fetching logic here (if needed)
+    return None  # Adjust as necessary
 
-    hashtags = ["therealworld", "hu", "hustlersuniversity", "matrix"]
-    videos = []
-
-    # Fetch videos for each hashtag
-    for hashtag in hashtags:
-        hashtag_videos = api.by_hashtag(hashtag, count=1)  # Fetch one video per hashtag
-        videos.extend(hashtag_videos)  # Collect videos from all hashtags
-
-    if videos:
-        # Get the URL of the first video found
-        video_url = videos[0]['video']['playAddr']  # Assuming 'playAddr' contains the video URL
-        return video_url
-    else:
-        return None  # Return None if no videos found
+# Function to get a random YouTube Short
+def get_random_youtube_short():
+    shorts_urls = [
+        "https://www.youtube.com/watch?v=shorts1",  # Replace with actual YouTube Shorts URLs
+        "https://www.youtube.com/watch?v=shorts2",
+        "https://www.youtube.com/watch?v=shorts3",
+    ]
+    return random.choice(shorts_urls)
 
 # Instagram API to post the video
 def post_to_instagram(video_url, caption):
@@ -37,9 +39,14 @@ def post_to_instagram(video_url, caption):
 
 # Main function to download and post video
 def main():
+    # Try to download TikTok videos first
     video_url = download_tiktok_videos()
+    if not video_url:
+        # Fallback to YouTube Shorts if no TikTok video is found
+        video_url = download_youtube_short(get_random_youtube_short())
+    
     if video_url:
-        caption = "Reposting Andrew Tate's video to Instagram #AndrewTate #Repost"
+        caption = "Reposting a video to Instagram #Repost"
         post_to_instagram(video_url, caption)
     else:
         print("No videos found.")
